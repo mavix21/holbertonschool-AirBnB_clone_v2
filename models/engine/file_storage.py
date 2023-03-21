@@ -18,12 +18,9 @@ class FileStorage:
 
     def save(self):
         """Saves storage dictionary to file"""
+        obj_dict = {k: v.to_dict() for k, v in FileStorage.__objects.items()}
         with open(FileStorage.__file_path, 'w') as f:
-            temp = {}
-            temp.update(FileStorage.__objects)
-            for key, val in temp.items():
-                temp[key] = val.to_dict()
-            json.dump(temp, f)
+            json.dump(obj_dict, f, indent=4, sort_keys=True)
 
     def reload(self):
         """Loads storage dictionary from file"""
@@ -45,6 +42,6 @@ class FileStorage:
             with open(FileStorage.__file_path, 'r') as f:
                 temp = json.load(f)
                 for key, val in temp.items():
-                        self.all()[key] = classes[val['__class__']](**val)
+                    self.all()[key] = classes[val['__class__']](**val)
         except FileNotFoundError:
             pass
