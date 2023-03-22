@@ -115,15 +115,52 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        if not args:
+        args = args.partition(" ")
+        if not args[0]:
             print("** class name missing **")
             return
-        elif args not in HBNBCommand.classes:
+        elif args[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        new_instance = HBNBCommand.classes[args]()
-        storage.save()
+
+        new_instance = HBNBCommand.classes[args[0]]()
         print(new_instance.id)
+
+        if not args[2]:
+            storage.save()
+            return
+
+        params = args[2].split(" ")
+        for param in params:
+            param = param.partition("=")
+            if not param[0] or not param[2]:
+                continue
+            key = param[0]
+            value = param[2]
+            try:
+                if value[0] == '\"' and value[-1] == '\"':
+                    value = value.strip('\"')
+                    if not value:
+                        raise Exception
+                    value = value.replace('_', ' ')
+                elif value.isdigit():
+                    value = int(value)
+                else:
+                    value = float(value)
+
+                if key in ["id", "created_at", "updated_at"]:
+                    print(f"Cannot set {key} attibute")
+                    raise Exception
+
+                if key in HBNBCommand.types:
+                    value = HBNBCommand.types[key](value)
+
+                new_instance.__dict__.update({key: value})
+
+            except Exception as bad_syntax:
+                continue
+
+        storage.save()
 
     def help_create(self):
         """ Help information for the create method """
@@ -242,6 +279,7 @@ class HBNBCommand(cmd.Cmd):
         else:  # class name not present
             print("** class name missing **")
             return
+
         if c_name not in HBNBCommand.classes:  # class name invalid
             print("** class doesn't exist **")
             return
@@ -281,6 +319,7 @@ class HBNBCommand(cmd.Cmd):
             # if att_name was not quoted arg
             if not att_name and args[0] != ' ':
                 att_name = args[0]
+
             # check for quoted val arg
             if args[2] and args[2][0] == '\"':
                 att_val = args[2][1:args[2].find('\"', 1)]
@@ -288,6 +327,15 @@ class HBNBCommand(cmd.Cmd):
             # if att_val was not quoted arg
             if not att_val and args[2]:
                 att_val = args[2].partition(' ')[0]
+
+            try:
+                if not att_val.partition('-')[0] \
+                        and att_val.partition('-')[2].isdigit():
+                    att_val = int(att_val)
+                elif '.' in att_val:
+                    att_val = float(att_val)
+            except Exception:
+                pass
 
             args = [att_name, att_val]
 
@@ -302,12 +350,23 @@ class HBNBCommand(cmd.Cmd):
                 if not att_name:  # check for att_name
                     print("** attribute name missing **")
                     return
+
                 if not att_val:  # check for att_value
                     print("** value missing **")
                     return
+
                 # type cast as necessary
-                if att_name in HBNBCommand.types:
-                    att_val = HBNBCommand.types[att_name](att_val)
+                try:
+                    if att_name in HBNBCommand.types:
+                        att_val = HBNBCommand.types[att_name](att_val)
+                except Exception as e:
+                    print(f"{att_name} must be of type \
+{HBNBCommand.types[att_name].__name__}")
+                    return
+
+                if att_name in ["id", "created_at", "updated_at"]:
+                    print(f"Cannot update {att_name} attribute")
+                    return
 
                 # update dictionary with name, value pair
                 new_dict.__dict__.update({att_name: att_val})
