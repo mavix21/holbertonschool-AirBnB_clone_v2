@@ -143,7 +143,8 @@ class HBNBCommand(cmd.Cmd):
                     if not value:
                         raise Exception
                     value = value.replace('_', ' ')
-                elif value.isdigit():
+                elif not value.partition('-')[0] \
+                        and value.partition('-')[2].isdigit():
                     value = int(value)
                 else:
                     value = float(value)
@@ -152,8 +153,13 @@ class HBNBCommand(cmd.Cmd):
                     print(f"Cannot set {key} attibute")
                     raise Exception
 
-                if key in HBNBCommand.types:
-                    value = HBNBCommand.types[key](value)
+                try:
+                    if key in HBNBCommand.types:
+                        value = HBNBCommand.types[key](value)
+                except Exception as e:
+                    print(f"{value} must be of type \
+{HBNBCommand.types[key].__name__}")
+                    raise e
 
                 new_instance.__dict__.update({key: value})
 
@@ -223,7 +229,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -359,7 +365,7 @@ class HBNBCommand(cmd.Cmd):
                 try:
                     if att_name in HBNBCommand.types:
                         att_val = HBNBCommand.types[att_name](att_val)
-                except Exception as e:
+                except Exception:
                     print(f"{att_name} must be of type \
 {HBNBCommand.types[att_name].__name__}")
                     return
