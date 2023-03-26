@@ -2,6 +2,8 @@
 """This module defines a class User"""
 from .base_model import BaseModel, Base
 from sqlalchemy import Column, String
+from sqlalchemy.orm import relationship
+from .place import Place
 import os
 
 storage_type = os.environ.get('HBNB_TYPE_STORAGE')
@@ -15,7 +17,7 @@ class User(BaseModel, Base):
         password = Column(String(128), nullable=False)
         first_name = Column(String(128))
         last_name = Column(String(128))
-
+        places = relationship("Place", backref="user", cascade="all")
     else:
         email = ''
         password = ''
