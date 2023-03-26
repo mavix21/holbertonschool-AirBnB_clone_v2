@@ -28,8 +28,8 @@ class DBStorage:
                'Place': Place,
                'State': State,
                'City': City,
-               # 'Amenity': Amenity,
-               # 'Review': Review
+               'Amenity': Amenity,
+               'Review': Review
               }
 
     def __init__(self):
@@ -54,8 +54,8 @@ class DBStorage:
 
             return {type(obj).__name__ + '.' + obj.id: obj for obj in objs}
 
-        except Exception as e:
-            print("Error: {}".format(str(e)))
+        except Exception:
+            # print("Error: {}".format(str(e)))
             return {}
 
     def new(self, obj):
