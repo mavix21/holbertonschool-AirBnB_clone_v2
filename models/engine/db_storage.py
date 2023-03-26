@@ -24,7 +24,7 @@ class DBStorage:
     __engine = None
     __session = None
     classes = {
-               # 'User': User,
+               'User': User,
                # 'Place': Place,
                'State': State,
                'City': City,
@@ -41,10 +41,9 @@ class DBStorage:
     def all(self, cls=None):
         if not self.__session:
             print("No session established")
-            return
+            return {}
 
         try:
-            self.reload()
             objs = []
             if not cls:
                 for _class in DBStorage.classes.values():
@@ -57,6 +56,7 @@ class DBStorage:
 
         except Exception as e:
             print("Error: {}".format(str(e)))
+            return {}
 
     def new(self, obj):
         if not self.__session:
@@ -80,7 +80,11 @@ class DBStorage:
 
     def delete(self, obj=None):
         if self.__session and obj:
-            self.__session.delete(obj)
+            # self.__session.delete(obj)
+            Session = sessionmaker(bind=self.__engine)
+            session1 = Session.object_session(obj)
+            if session1:
+                session1.delete(obj)
 
     def reload(self):
         try:
@@ -99,7 +103,7 @@ class DBStorage:
             finally:
                 if self.__session:
                     try:
-                        self.__session.remove()
+                        self.__session.close()
                     except Exception as e:
                         print("Error: {}".format(str(e)))
                 exit(1)
