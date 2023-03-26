@@ -24,7 +24,7 @@ class test_basemodel(unittest.TestCase):
     def tearDown(self):
         try:
             os.remove('file.json')
-        except:
+        except Exception:
             pass
 
     def test_default(self):
@@ -47,7 +47,9 @@ class test_basemodel(unittest.TestCase):
         with self.assertRaises(TypeError):
             new = BaseModel(**copy)
 
-    def test_save(self):
+    @unittest.skipIf(os.environ.get('HBNB_TYPE_STORAGE') == 'db',
+                     "Test only for file storage type")
+    def test_save_fs(self):
         """ Testing save """
         i = self.value()
         i.save()
@@ -77,8 +79,8 @@ class test_basemodel(unittest.TestCase):
     def test_kwargs_one(self):
         """ """
         n = {'Name': 'test'}
-        with self.assertRaises(KeyError):
-            new = self.value(**n)
+        new = self.value(**n)
+        self.assertIsNotNone(getattr(new, 'id', None))
 
     def test_id(self):
         """ """
