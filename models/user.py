@@ -4,6 +4,7 @@ from .base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
 from .place import Place
+from .review import Review
 import os
 
 storage_type = os.environ.get('HBNB_TYPE_STORAGE')
@@ -18,6 +19,7 @@ class User(BaseModel, Base):
         first_name = Column(String(128))
         last_name = Column(String(128))
         places = relationship("Place", backref="user", cascade="all")
+        reviews = relationship("Review", backref="user", cascade="all")
     else:
         email = ''
         password = ''
