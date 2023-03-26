@@ -31,9 +31,10 @@ class FileStorage:
         if not obj:
             return
 
-        key = '.'.join([type(obj).__name__, obj.id])
-        if key in FileStorage.__objects:
-            del FileStorage.__objects[key]
+        for k, v in FileStorage.__objects.items():
+            if v is obj:
+                del FileStorage.__objects[k]
+                break
 
     def reload(self):
         """Loads storage dictionary from file"""
