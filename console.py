@@ -2,9 +2,8 @@
 """ Console Module """
 import cmd
 import sys
-import os
+from models import storage
 from models.base_model import BaseModel
-from models.__init__ import storage
 from models.user import User
 from models.place import Place
 from models.state import State
@@ -239,10 +238,13 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del (storage.all()[key])
+            obj = storage.all()[key]
+            obj.delete()
             storage.save()
         except KeyError:
             print("** no instance found **")
+        except Exception as e:
+            print(str(e))
 
     def help_destroy(self):
         """ Help information for the destroy command """
