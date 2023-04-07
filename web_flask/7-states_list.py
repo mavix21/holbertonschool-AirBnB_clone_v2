@@ -18,7 +18,7 @@ def render_states_list():
 
 @app.teardown_appcontext
 def close_session(self):
-    """Removes the curren session"""
+    """Removes the current session"""
     storage.close()
 
 
