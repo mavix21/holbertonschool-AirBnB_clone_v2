@@ -105,5 +105,15 @@ class DBStorage:
                     try:
                         self.__session.close()
                     except Exception as e:
-                        print("Error: {}".format(str(e)))
+                        print("An error while closing the session: {}"
+                              .format(str(e)))
                 exit(1)
+
+    def close(self):
+        """Remove the current session to create a new one"""
+        try:
+            if self.__session:
+                self.__session.close()
+        except Exception as e:
+            print("An error while closing the session: {}"
+                  .format(str(e)))
