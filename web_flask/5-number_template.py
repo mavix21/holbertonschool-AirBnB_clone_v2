@@ -42,12 +42,14 @@ def hello_python(text):
 
 @app.route("/number/<int:n>", strict_slashes=False)
 def only_if_number(n):
+    """Returns only if n is a number"""
     return f"{n} is a number"
 
 
 @app.route("/number_template/<int:n>", strict_slashes=False)
-def template_number(n):
-    return render_template("5-number.html", num=escape(n))
+def number_template(n):
+    """Display the int in a h1 tag"""
+    return (render_template('5-number.html', num=escape(n)))
 
 
 if __name__ == "__main__":
