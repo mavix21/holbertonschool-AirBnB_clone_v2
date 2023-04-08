@@ -1,0 +1,112 @@
+.filters {
+	height: 70px;
+	margin: 0 12px;
+	border: 1px solid #DDD;
+	border-radius: 4px;
+	display: flex;
+	align-items: start;
+}
+
+.filters button {
+	width: 20%;
+	min-width: 98px;
+	height: 48px;
+	color: #FFF;
+	background-color: #FF5A5F;
+	font-size: 1.8rem;
+	display: inline-block;
+	border-radius: 4px;
+	margin-left: auto;
+	margin-right: 30px;
+	text-align: center;
+	align-self: center;
+}
+
+.filters button:hover {
+	opacity: 90%;
+}
+
+.filters > div {
+	height: 100%;
+	width: 25%;
+	display: flex;
+	flex-direction: column;
+	justify-content: start;
+}
+
+.locations {
+	border-right: 1px solid #DDD;
+}
+
+.filters h3 {
+	font-weight: 600;
+	font-size: 2rem;
+}
+
+.filters h4 {
+	font-weight: 400;
+}
+
+.filters-tab {
+	min-height: 70px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+}
+
+.filters-tab > * {
+	padding-left: 30px;
+}
+
+.popover {
+	background-color: #FAFAFA;
+	border: 1px solid #DDD;
+	border-radius: 4px;
+	width: 100%;
+	min-height: 300px;
+	overflow-y: scroll;
+	padding-block: 24px;
+	z-index: 10;
+}
+
+.locations-list, .amenities-list {
+	display: none;
+}
+
+.locations:hover .locations-list {
+	display: block;
+}
+
+.amenities:hover .amenities-list {
+	display: block;
+}
+
+.list_item-states {
+	padding-left: 30px;
+}
+
+.list_item-states ul > li:not(:last-child){
+	margin-bottom: 8px;	
+}
+
+.popover > .list_item-states:not(:last-child) {
+	margin-bottom: 30px;
+}
+
+.popover > li > ul > li {
+	padding-left: 16px;
+}
+
+.amenities-list > li {
+	padding-left: 30px;
+}
+
+.amenities-list > li:not(:last-child) {
+	margin-bottom: 12px;
+}
+
+.popover-heading {
+	font-size: 2rem;
+	font-weight: 600;
+	margin-bottom: 4px;
+}
