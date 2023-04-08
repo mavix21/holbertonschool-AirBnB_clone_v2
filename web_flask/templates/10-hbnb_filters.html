@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>AirBnb Clone</title>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+	<link rel="icon" type="image/x-icon" href="./images/favicon.ico" />
+    <link rel="stylesheet" href="../static/styles/4-common.css" />
+    <link rel="stylesheet" href="../static/styles/3-header.css" />
+    <link rel="stylesheet" href="../static/styles/3-footer.css" />
+    <link rel="stylesheet" href="../static/styles/6-filters.css" />
+  </head>
+  <body>
+    <header>
+		<div class="logo"></div>
+	</header>
+	<main class="container">
+		<section class="filters">
+			<div class="locations">
+				<div class="filters-tab">
+					<h3>States</h3>
+					<h4>&nbsp;</h4>
+				</div>
+				<ul class="popover locations-list">
+					{% for state in states | sort(attribute="name") %}
+					<li class="list_item-states">
+						<h2 class="popover-heading">{{ state.name }}</h2>
+						<ul>
+							{% for city in state.cities | sort(attribute="name") %}
+							<li>{{ city.name }}</li>
+							{% endfor %}
+						</ul>
+					</li>
+					{% endfor %}
+				</ul>
+			</div>
+			<div class="amenities">
+				<div class="filters-tab">
+					<h3>Amenities</h3>
+					<h4>&nbsp;</h4>
+				</div>
+				<ul class="popover amenities-list">
+					{% for amenity in amenities | sort(attribute="name") %}
+					<li>{{ amenity.name }}</li>
+					{% endfor %}
+				</ul>
+			</div>
+			<button type="button">Search</button>
+		</section>
+	</main>
+    <footer>
+      <p>Holberton School</p>
+    </footer>
+  </body>
+</html>
