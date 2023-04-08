@@ -10,21 +10,22 @@ app = Flask(__name__)
 
 
 @app.route("/states", strict_slashes=False)
-def render_states_list():
-    """Renders all states stored in the database"""
-    states = storage.all(State).values()
-    return render_template("9-states.html", states=states)
-
-
 @app.route("/states/<id>", strict_slashes=False)
-def render_state_by_id(id):
-    """Renders all states stored in the database"""
+def render_states(id=""):
+    """Renders all states, or cities from a state, stored in the database"""
     state = None
     states = storage.all(State)
+
     if id in [state.id for state in states.values()]:
         state = states.get(f'State.{id}')
 
-    return render_template("9-states.html", state=state)
+    context = {
+            'id': id,
+            'states': states.values(),
+            'state': state
+            }
+
+    return render_template("9-states.html", **context)
 
 
 @app.teardown_appcontext
